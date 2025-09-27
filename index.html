@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WirelessMathLM: Teaching Mathematical Reasoning for LLMs in Wireless Communications</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6" defer></script> -->
+    <!-- <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script> -->
+    <!-- <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script> -->
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="#abstract">Abstract</a>
+                <a href="#highlights">Highlights</a>
+                <a href="#results">Results</a>
+                <a href="#dataset">Dataset</a>
+                <a href="#experiments">Experiments</a>
+                <a href="#transfer">Transfer Learning</a>
+                <a href="#qualitative">Analysis</a>
+                <a href="#citation">Citation</a>
+                <a href="#resources">Resources</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="institution-logo">
+                    <img src="maxwell_logo.png" alt="Nanyang Technological University" class="logo">
+                </div>
+                <h1 class="paper-title">
+                    WirelessMathLM: Teaching Mathematical Reasoning for LLMs in Wireless Communications with Reinforcement Learning
+                </h1>
+                <div class="authors">
+                    <span class="author"><a href="https://lixin.ai/">Xin Li</a>,</span>
+                    <span class="author"><a href="https://liumengbing.com/">Mengbing Liu</a>,</span>
+                    <span class="author"><a href="https://scholar.google.com/citations?user=LWh42_8AAAAJ">Yiyang Zhu</a>,</span>
+                    <span class="author"><a href="">Wenhe Zhang</a>,</span>
+                    <span class="author"><a href="https://scholar.google.com.sg/citations?user=zdSz9-gAAAAJ">Li Wei</a>,</span>
+                    <span class="author"><a href="https://scholar.google.com/citations?user=QbTi47kAAAAJ">Jiancheng An</a>,</span><br>
+                    <span class="author"><a href="https://blogs.ntu.edu.sg/chau-yuen/">Chau Yuen</a></span>
+                </div>
+                <div class="affiliation">
+                    Nanyang Technological University
+                </div>
+                <div class="paper-links">
+                    <a href="#" class="btn btn-primary" onclick="alert('Paper will be available on arXiv soon')">
+                        <i class="fas fa-file-pdf"></i> arXiv Paper
+                    </a>
+                    <a href="#" class="btn btn-secondary" onclick="alert('Code will be released upon publication')">
+                        <i class="fab fa-github"></i> Code
+                    </a>
+                    <a href="WirelessMathLM-Overview.pdf" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-presentation"></i> Overview
+                    </a>
+                </div>
+            </div>
+            <!-- <div class="hero-visual">
+                <img src="teaser_wireless_math_lm.pdf" alt="WirelessMathLM Overview" class="teaser-image">
+            </div> -->
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section id="abstract" class="section">
+            <div class="container">
+                <h2>Abstract</h2>
+                <div class="abstract-content">
+                    <p>
+                        Large language models (LLMs) excel at general mathematical reasoning but fail catastrophically on specialized technical mathematics. In wireless communications, where problems require precise manipulation of information-theoretic bounds, optimization constraints, and signal processing formulations, even state-of-the-art models struggle to achieve competent performance.
+                    </p>
+                    <p>
+                        We present <strong>WirelessMathLM</strong>, demonstrating that compact models (0.5B–7B parameters) can match or exceed much larger models through domain-specific reinforcement learning with verifiable rewards. Our key insight is that wireless mathematics problems possess a unique property—verifiable correctness—that enables effective reinforcement learning without human feedback.
+                    </p>
+                    <p>
+                        We construct <strong>WirelessMathBench-XL</strong>, a comprehensive benchmark of 4,027 problems from 970 papers. Using Group Relative Policy Optimization (GRPO) with binary verification rewards, we train models directly from base checkpoints without supervised warm-start.
+                    </p>
+                    <p>
+                        Our 7B model achieves <strong>39.5% accuracy</strong> on WirelessMathBench-XL, approaching GPT-4o (40.4%) while using ≈100× fewer parameters than DeepSeek-R1 (671B, 57.4%). Remarkably, GRPO training nearly doubles performance across all model scales, with positive transfer to general mathematics benchmarks.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="highlights" class="section bg-light">
+            <div class="container">
+                <h2>Key Highlights</h2>
+                <div class="highlights-grid">
+                    <div class="highlight-card">
+                        <div class="highlight-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Verification-Based RL</h3>
+                        <p>First to use binary verification rewards for domain-specific mathematical reasoning without human feedback</p>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="highlight-icon">
+                            <i class="fas fa-compress-alt"></i>
+                        </div>
+                        <h3>Compact Models</h3>
+                        <p>7B model approaches GPT-4o performance while using ≈100× fewer parameters than DeepSeek-R1</p>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="highlight-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>WirelessMathBench-XL</h3>
+                        <p>4,027 problems from 970 papers spanning 6 communication eras with automated verification</p>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="highlight-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Positive Transfer</h3>
+                        <p>Domain-specific training improves general math performance by +8.4 points on average</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="results" class="section">
+            <div class="container">
+                <h2>Key Results</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-number">39.5%</div>
+                        <div class="result-description">WirelessMathLM-7B accuracy on WirelessMathBench-XL</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-number">100×</div>
+                        <div class="result-description">Fewer parameters than DeepSeek-R1 while approaching performance</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-number">+103%</div>
+                        <div class="result-description">Performance improvement for 3B model with GRPO training</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-number">+8.4</div>
+                        <div class="result-description">Average point improvement on general math benchmarks</div>
+                    </div>
+                </div>
+
+                <div class="figures-grid">
+                    <div class="figure-container">
+                        <img src="figure1_model_performance.png" alt="Model Performance Comparison" class="figure-image">
+                        <div class="figure-caption">
+                            <strong>Figure 1:</strong> Performance comparison across different model sizes and training methods on WirelessMathBench-XL.
+                        </div>
+                    </div>
+                    <div class="figure-container">
+                        <img src="figure2_grpo_impact.png" alt="GRPO Training Impact" class="figure-image">
+                        <div class="figure-caption">
+                            <strong>Figure 2:</strong> Impact of Group Relative Policy Optimization (GRPO) training on model performance across scales.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dataset" class="section">
+            <div class="container">
+                <h2>WirelessMathBench-XL Dataset</h2>
+                <div class="dataset-content">
+                    <div class="dataset-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">4,027</div>
+                            <div class="stat-label">Problems</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">970</div>
+                            <div class="stat-label">Source Papers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">Communication Eras</div>
+                        </div>
+                    </div>
+
+                    <div class="dataset-description">
+                        <p>
+                            WirelessMathBench-XL is a comprehensive benchmark for evaluating mathematical reasoning in wireless communications. The dataset spans six major communication eras and covers diverse problem types including information theory, signal processing, optimization, and network analysis.
+                        </p>
+                    </div>
+                    <div class="dataset-figures">
+                        <div class="figure-container">
+                            <img src="techniques_distribution_vertical.png" alt="Techniques Distribution" class="figure-image">
+                            <div class="figure-caption">
+                                Distribution of mathematical techniques and problem types in the dataset.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experiments" class="section bg-light">
+            <div class="container">
+                <h2>Experimental Setup & Results</h2>
+
+                <div class="experiments-content">
+                    <div class="experiment-section">
+                        <h3>Comprehensive Baseline Comparison</h3>
+                        <p>We benchmark against comprehensive baselines spanning proprietary and open-source models:</p>
+                        <div class="baseline-categories">
+                            <div class="baseline-category">
+                                <h4>Proprietary Models</h4>
+                                <ul>
+                                    <li><strong>GPT-5</strong> (57.87% overall) - Best proprietary performance</li>
+                                    <li><strong>GPT-4o</strong> (40.37%) - Close to our 7B model performance</li>
+                                    <li><strong>Claude-4.0-Sonnet</strong> (53.75%)</li>
+                                    <li><strong>Gemini-2.5-Flash</strong> (54.25%)</li>
+                                    <li><strong>Grok-4-Fast</strong> (54.89%)</li>
+                                </ul>
+                            </div>
+                            <div class="baseline-category">
+                                <h4>Open-Source General</h4>
+                                <ul>
+                                    <li><strong>DeepSeek-R1</strong> (671B, 57.37%) - Massive but best open model</li>
+                                    <li><strong>DeepSeek-V3.1</strong> (671B, 56.87%)</li>
+                                    <li><strong>Llama-3.3-70B</strong> (38.37%)</li>
+                                    <li><strong>Qwen2.5-72B</strong> (37.50%)</li>
+                                </ul>
+                            </div>
+                            <div class="baseline-category">
+                                <h4>Math-Specialized</h4>
+                                <ul>
+                                    <li><strong>Qwen2.5-Math-72B</strong> (42.13%)</li>
+                                    <li><strong>DeepSeekMath-7B-RL</strong> (21.50%)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="performance-breakdown">
+                        <h3>Performance by Question Type</h3>
+                        <div class="question-types">
+                            <div class="question-type">
+                                <h4>Multiple Choice Questions (MCQ)</h4>
+                                <div class="performance-comparison">
+                                    <div class="model-perf">WirelessMathLM-7B: <span class="perf-score">53.4%</span></div>
+                                    <div class="model-perf">GPT-4o: <span class="perf-score">54.1%</span></div>
+                                    <div class="model-perf">DeepSeek-R1: <span class="perf-score">65.4%</span></div>
+                                </div>
+                            </div>
+                            <div class="question-type">
+                                <h4>Fill-in-the-Blank</h4>
+                                <div class="performance-comparison">
+                                    <div class="model-perf">WirelessMathLM-7B: <span class="perf-score">37.0%</span></div>
+                                    <div class="model-perf">Base Model: <span class="perf-score">14.3%</span></div>
+                                    <div class="improvement">+159% improvement</div>
+                                </div>
+                            </div>
+                            <div class="question-type">
+                                <h4>Full Equation Completion</h4>
+                                <div class="performance-comparison">
+                                    <div class="model-perf">WirelessMathLM-7B: <span class="perf-score">36.1%</span></div>
+                                    <div class="model-perf">GPT-5-mini: <span class="perf-score">40.3%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="training-details">
+                        <h3>Training Configuration</h3>
+                        <div class="training-specs">
+                            <div class="training-spec">
+                                <h4>Hardware & Time</h4>
+                                <ul>
+                                    <li>4 × NVIDIA A6000 GPUs</li>
+                                    <li>0.5B model: 14 hours</li>
+                                    <li>3B model: 40 hours</li>
+                                    <li>7B model: 61 hours</li>
+                                </ul>
+                            </div>
+                            <div class="training-spec">
+                                <h4>Hyperparameters</h4>
+                                <ul>
+                                    <li>40 epochs (240 steps)</li>
+                                    <li>Learning rate: 10⁻⁶</li>
+                                    <li>Temperature: 0.6 (validation), 1.0 (training)</li>
+                                    <li>KL penalty β = 0.01</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="transfer" class="section">
+            <div class="container">
+                <h2>Transfer Learning Results</h2>
+                <div class="transfer-content">
+                    <div class="transfer-intro">
+                        <h3>Positive Transfer to General Mathematics</h3>
+                        <p>Surprisingly, domain-specific training on wireless mathematics enhances general mathematical reasoning without catastrophic forgetting.</p>
+                    </div>
+
+                    <div class="transfer-results">
+                        <div class="transfer-comparison">
+                            <h4>WirelessMathLM-7B Performance Gains</h4>
+                            <div class="benchmark-results">
+                                <div class="benchmark-result">
+                                    <div class="benchmark-name">MATH 500</div>
+                                    <div class="benchmark-scores">
+                                        <span class="base-score">52.0%</span>
+                                        <span class="arrow">→</span>
+                                        <span class="final-score">67.0%</span>
+                                        <span class="improvement">+28.8%</span>
+                                    </div>
+                                </div>
+                                <div class="benchmark-result">
+                                    <div class="benchmark-name">Minerva-Math</div>
+                                    <div class="benchmark-scores">
+                                        <span class="base-score">12.1%</span>
+                                        <span class="arrow">→</span>
+                                        <span class="final-score">14.3%</span>
+                                        <span class="improvement">+18.2%</span>
+                                    </div>
+                                </div>
+                                <div class="benchmark-result">
+                                    <div class="benchmark-name">OlympiadBench</div>
+                                    <div class="benchmark-scores">
+                                        <span class="base-score">25.3%</span>
+                                        <span class="arrow">→</span>
+                                        <span class="final-score">30.2%</span>
+                                        <span class="improvement">+19.4%</span>
+                                    </div>
+                                </div>
+                                <div class="benchmark-result">
+                                    <div class="benchmark-name">AMC</div>
+                                    <div class="benchmark-scores">
+                                        <span class="base-score">27.7%</span>
+                                        <span class="arrow">→</span>
+                                        <span class="final-score">41.0%</span>
+                                        <span class="improvement">+48.0%</span>
+                                    </div>
+                                </div>
+                                <div class="benchmark-result">
+                                    <div class="benchmark-name">AIME24</div>
+                                    <div class="benchmark-scores">
+                                        <span class="base-score">6.7%</span>
+                                        <span class="arrow">→</span>
+                                        <span class="final-score">13.3%</span>
+                                        <span class="improvement">+98.5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="transfer-analysis">
+                            <h4>Key Insights</h4>
+                            <ul>
+                                <li><strong>No Catastrophic Forgetting:</strong> Specialized training strengthens rather than degrades fundamental mathematical capabilities</li>
+                                <li><strong>Consistent Gains:</strong> Improvements across diverse mathematical domains suggest robust transfer</li>
+                                <li><strong>Scale-Dependent Effects:</strong> 3B model shows even larger relative improvements (+39.9% on MATH 500)</li>
+                                <li><strong>Average Improvement:</strong> +8.4 points across all general mathematics benchmarks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="qualitative" class="section bg-light">
+            <div class="container">
+                <h2>Qualitative Analysis</h2>
+                <div class="qualitative-content">
+                    <div class="analysis-overview">
+                        <h3>Solution Quality Assessment</h3>
+                        <p>Comprehensive analysis of 800 solutions from WirelessMathLM-7B reveals sophisticated mathematical reasoning capabilities developed through GRPO training.</p>
+                    </div>
+
+                    <div class="quality-indicators">
+                        <div class="quality-metric">
+                            <div class="metric-stat">99.1%</div>
+                            <div class="metric-desc">Solutions demonstrate clear step-by-step reasoning with logical connectives</div>
+                        </div>
+                        <div class="quality-metric">
+                            <div class="metric-stat">87%</div>
+                            <div class="metric-desc">Correct responses properly identify underlying problem types and select appropriate methodologies</div>
+                        </div>
+                        <div class="quality-metric">
+                            <div class="metric-stat">100%</div>
+                            <div class="metric-desc">Solutions maintain dimensional consistency in matrix operations and physical constraints</div>
+                        </div>
+                    </div>
+
+                    <div class="reasoning-capabilities">
+                        <h3>Advanced Reasoning Capabilities</h3>
+                        <div class="capabilities-grid">
+                            <div class="capability">
+                                <h4>Domain-Specific Knowledge Integration</h4>
+                                <p>Strong competency in applying wireless-specific mathematical frameworks including conjugate beamforming, information-theoretic bounds, and signal processing formulations.</p>
+                            </div>
+                            <div class="capability">
+                                <h4>Constraint Awareness</h4>
+                                <p>Automatically incorporates non-negativity constraints for power allocations, maintains causality in signal processing, and respects dimensionality requirements.</p>
+                            </div>
+                            <div class="capability">
+                                <h4>Physical Intuition Integration</h4>
+                                <p>Solutions frequently connect mathematical expressions to underlying physical phenomena, demonstrating deep understanding beyond pattern matching.</p>
+                            </div>
+                            <div class="capability">
+                                <h4>Method Justification</h4>
+                                <p>Correct solutions routinely include explicit rationales for chosen approaches with detailed step-by-step derivations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="citation" class="section">
+            <div class="container">
+                <h2>Citation</h2>
+                <div class="citation-content">
+                    <div class="citation-intro">
+                        <p>If you use WirelessMathLM, WirelessMathBench-XL, or our methodology in your research, please cite our paper:</p>
+                    </div>
+
+                    <div class="citation-box">
+                        <pre id="citation-text">@article{li2025wirelessmathlm,
+  title={WirelessMathLM: Teaching Mathematical Reasoning for LLMs in Wireless Communications with Reinforcement Learning},
+  author={Li, Xin and Liu, Mengbing and Zhu, Yiyang and Zhang, Wenhe and Wei, Li and An, Jiancheng and Yuen, Chau},
+  journal={arXiv preprint},
+  year={2025}
+}</pre>
+
+                        <div class="citation-actions">
+                            <button id="copy-citation" class="btn btn-primary">
+                                <i class="fas fa-copy"></i> Copy Citation
+                            </button>
+                            <button id="download-bib" class="btn btn-secondary">
+                                <i class="fas fa-download"></i> Download .bib
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="resources" class="section bg-light">
+            <div class="container">
+                <h2>Resources</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3>Paper</h3>
+                        <p>Read the full paper on arXiv (coming soon)</p>
+                        <a href="#" class="resource-link" onclick="alert('Paper will be available on arXiv soon')">Access Paper</a>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <h3>Code</h3>
+                        <p>Source code and training scripts (will be released upon publication)</p>
+                        <a href="#" class="resource-link" onclick="alert('Code will be released upon publication')">View Code</a>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Dataset</h3>
+                        <p>WirelessMathBench-XL benchmark dataset</p>
+                        <a href="#" class="resource-link" onclick="alert('Dataset will be released upon publication')">Download Dataset</a>
+                    </div>
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>Models</h3>
+                        <p>WirelessMathLM models</p>
+                        <a href="#" class="resource-link" onclick="alert('Models will be released upon publication')">Download Models</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2025 WirelessMathLM. All rights reserved.</p>
+                    <p>Nanyang Technological University</p>
+                </div>
+                <div class="footer-links">
+                    <a href="mailto:xin019@ntu.edu.sg">Contact</a>
+                    <a href="#" onclick="alert('Paper will be available on arXiv soon')">arXiv</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
